@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import taskflow.entity.dto.auth.AuthenticationResponse;
+import taskflow.entity.dto.auth.LoginRequest;
 import taskflow.entity.dto.auth.RegisterRequest;
 import taskflow.services.interfaces.AuthenticationService;
 
@@ -24,5 +25,10 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody LoginRequest request){
+        AuthenticationResponse response = authenticationService.login(request);
+        return ResponseEntity.ok(response);
+    }
 
 }

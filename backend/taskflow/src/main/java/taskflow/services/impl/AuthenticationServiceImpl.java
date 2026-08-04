@@ -26,6 +26,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponse register(RegisterRequest request){
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new EmailAlreadyExistsException(request.getEmail());
+        }
+
         User user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -34,11 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .enabled(true)
                 .role(Role.ROLE_USER)
                 .build();
-
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new EmailAlreadyExistsException(request.getEmail());
-        }
-
+        
         userRepository.save(user);
         String jwt = jwtService.generateToken(user);
         return AuthenticationResponse.builder().accessToken(jwt).build();
