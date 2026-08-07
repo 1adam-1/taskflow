@@ -50,9 +50,9 @@ public class AuthenticationImplServiceTest {
         AuthenticationResponse response = authenticationService.register(request);
 
         assertNotNull(response);
-        assertEquals("jwt-token",response);
+        assertEquals("jwt-token",response.getAccessToken());
 
-        verify(userRepository.save(any(User.class)));
+        verify(userRepository).save(any(User.class));
 
     }
 

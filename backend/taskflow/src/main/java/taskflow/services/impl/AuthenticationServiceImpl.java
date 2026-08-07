@@ -38,7 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .enabled(true)
                 .role(Role.ROLE_USER)
                 .build();
-        
+
         userRepository.save(user);
         String jwt = jwtService.generateToken(user);
         return AuthenticationResponse.builder().accessToken(jwt).build();
