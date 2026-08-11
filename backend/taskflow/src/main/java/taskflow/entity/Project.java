@@ -10,6 +10,8 @@ import taskflow.entity.audit.BaseEntity;
 import taskflow.entity.enums.ProjectStatus;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="projects")
@@ -38,5 +40,11 @@ public class Project extends BaseEntity {
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
+    @OneToMany(
+            mappedBy = "project",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ProjectMember> members = new ArrayList<>();
 
 }

@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -50,6 +51,9 @@ public class User extends BaseEntity implements UserDetails {
     @Builder.Default
     @Column(nullable = false)
     private boolean enabled = true;
+
+    @OneToMany(mappedBy = "user")
+    List<ProjectMember> projectMemberships = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
