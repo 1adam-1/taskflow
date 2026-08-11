@@ -17,7 +17,7 @@ import java.util.List;
 public class ProjectController {
     private final ProjectService projectService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<ProjectResponse>  createProject(@Valid @RequestBody CreateProjectRequest request){
         ProjectResponse response = projectService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -35,7 +35,7 @@ public class ProjectController {
         return ResponseEntity.ok(projects);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ProjectResponse> updateProject(@PathVariable Long id, @Valid @RequestBody CreateProjectRequest request){
         ProjectResponse response = projectService.update(id, request);
         return ResponseEntity.ok(response);
