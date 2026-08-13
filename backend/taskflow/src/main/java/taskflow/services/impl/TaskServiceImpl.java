@@ -3,11 +3,13 @@ package taskflow.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import taskflow.entity.Project;
+import taskflow.entity.ProjectMember;
 import taskflow.entity.Task;
 import taskflow.entity.User;
 import taskflow.entity.dto.task.CreateTaskRequest;
 import taskflow.entity.dto.task.TaskResponse;
 import taskflow.mapper.TaskMapper;
+import taskflow.repository.ProjectMemberRepository;
 import taskflow.repository.ProjectRepository;
 import taskflow.repository.TaskRepository;
 import taskflow.repository.UserRepository;
@@ -22,11 +24,17 @@ public class TaskServiceImpl implements TaskService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final TaskMapper taskMapper;
+    private final ProjectMemberRepository memberRepository;
 
     @Override
     public TaskResponse createTask(Long projectId, CreateTaskRequest request){
         Project project = projectRepository.findById(projectId).orElseThrow(()-> new RuntimeException("Project not found"));
-        User assignee = userRepository.findById(request.getAssigneeId()).orElseThrow(()-> new RuntimeException("User not found"));
+        User assignee = null;
+
+        if (request.getAssigneeId() != null) {
+            assignee = userRepository.findById(request.getAssigneeId())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+        }
 
         Task task  = Task.builder()
                 .title(request.getTitle())
@@ -38,7 +46,9 @@ public class TaskServiceImpl implements TaskService {
                 .assignee(assignee)
                 .build();
 
-        return taskMapper.toResponse(task);
+        Task saved = taskRepository.save(task);
+
+        return taskMapper.toResponse(saved);
     }
 
     @Override
@@ -50,9 +60,42 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskResponse updateTask(Long projectId, CreateTaskRequest request){
-        Project project = projectRepository.findById(projectId).orElseThrow(()-> new RuntimeException("Project not found"));
-        User assignee = userRepository.findById(request.getAssigneeId()).orElseThrow(()-> new RuntimeException("User not found"));
-        if (project.)
+    public TaskResponse getTaskById(Long taskId){
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new RuntimeException("Task not found"));
+        return taskMapper.toResponse(task);
+    }
+
+    @Override
+    public TaskResponse updateTask(Long taskId, CreateTaskRequest request){
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new RuntimeException("task not found"));
+        Project project = projectRepository.findById(task.getProject().getId()).orElseThrow(()-> new RuntimeException("Project not found"));
+        User assignee = null;
+
+        if (request.getAssigneeId() != null) {
+            assignee = userRepository.findById(request.getAssigneeId())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+        }        ProjectMember member = memberRepository.findByProjectAndUser(project, assignee).orElseThrow(()-> new RuntimeException("Member not found"));
+
+        if (!member.getProject().getId().equals(project.getId())){
+            throw new RuntimeException("Member not found in the project");
+        }
+
+        task.setTitle(request.getTitle());
+        task.setDescription(request.getDescription());
+        task.setStatus(request.getStatus());
+        task.setPriority(request.getPriority());
+        task.setDueDate(request.getDueDate());
+        task.setAssignee(assignee);
+
+        Task saved = taskRepository.save(task);
+
+        return taskMapper.toResponse(saved);
+
+    }
+
+    @Override
+    public void delete(Long taskId){
+        Task task = taskRepository.findById(taskId).orElseThrow(()->new RuntimeException("Task not found"));
+        taskRepository.delete(task);
     }
 }

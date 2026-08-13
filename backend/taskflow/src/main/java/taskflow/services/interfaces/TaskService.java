@@ -7,9 +7,10 @@ import taskflow.entity.dto.task.TaskResponse;
 
 import java.util.List;
 
-public interface TaskService extends JpaRepository<Task, Long> {
+public interface TaskService {
      TaskResponse createTask(Long projectId, CreateTaskRequest request);
      List<TaskResponse> getTasksByProject(Long projectId);
      TaskResponse updateTask(Long projectId, CreateTaskRequest request);
+     TaskResponse getTaskById(Long taskId);
      void delete(Long taskId);
 }
