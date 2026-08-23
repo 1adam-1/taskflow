@@ -1,13 +1,13 @@
 package taskflow.entity.dto.projectmember;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import taskflow.entity.enums.ProjectRole;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProjectMemberResponse {
     private Long id;
 

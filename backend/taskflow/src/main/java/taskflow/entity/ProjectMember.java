@@ -1,8 +1,10 @@
 package taskflow.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import taskflow.entity.audit.BaseEntity;
 import taskflow.entity.enums.ProjectRole;
 
@@ -14,6 +16,8 @@ import taskflow.entity.enums.ProjectRole;
 )
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProjectMember extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

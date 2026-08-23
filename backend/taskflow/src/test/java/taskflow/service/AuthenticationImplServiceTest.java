@@ -6,14 +6,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import taskflow.entity.User;
 import taskflow.entity.dto.auth.AuthenticationResponse;
+import taskflow.entity.dto.auth.LoginRequest;
 import taskflow.entity.dto.auth.RegisterRequest;
 import taskflow.exception.EmailAlreadyExistsException;
 import taskflow.repository.UserRepository;
 import taskflow.security.jwt.JwtService;
 import taskflow.services.impl.AuthenticationServiceImpl;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,7 +36,10 @@ public class AuthenticationImplServiceTest {
     private JwtService jwtService;
 
     @Mock
-    private AuthenticationManager authenticatonManaager;
+    private AuthenticationManager authenticatonManager;
+
+    @Mock
+    private Authentication authentication;
 
     @InjectMocks
     private AuthenticationServiceImpl authenticationService;
@@ -77,6 +85,26 @@ public class AuthenticationImplServiceTest {
         verify(userRepository, never()).save(any(User.class));
         verify(passwordEncoder, never()).encode(any());
         verify(jwtService, never()).generateToken(any(User.class));
+    }
+
+    @Test
+    void should_login_successfully(){
+        LoginRequest request = new LoginRequest("test@gmail.com", "password");
+        User user = new User();
+
+        when(authenticatonManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(authentication);
+        when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
+        when(jwtService.generateToken(user)).thenReturn("jwt-token");
+
+        AuthenticationResponse response = authenticationService.login(request);
+        assertNotNull(response);
+        assertEquals("jwt-token", response.getAccessToken());
+
+        verify(authenticatonManager).authenticate(
+                any(UsernamePasswordAuthenticationToken.class)
+        );
+        verify(userRepository).findByEmail(request.getEmail());
+        verify(jwtService).generateToken(user);
     }
 
 }

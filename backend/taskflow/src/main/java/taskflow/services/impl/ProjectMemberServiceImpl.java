@@ -50,10 +50,10 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
             );
         }
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(()->new RuntimeException("user with id :" + request.getEmail() + " not found"));
+                .orElseThrow(()->new RuntimeException("user with email :" + request.getEmail() + " not found"));
 
 
-        if(memberRepository.existByProjectAndUser(project,user)){
+        if(memberRepository.existsByProjectAndUser(project,user)){
             throw new RuntimeException("User already exist in the project");
         }
 
