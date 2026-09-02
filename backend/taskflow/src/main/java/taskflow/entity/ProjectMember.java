@@ -1,10 +1,7 @@
 package taskflow.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import taskflow.entity.audit.BaseEntity;
 import taskflow.entity.enums.ProjectRole;
 
@@ -14,7 +11,8 @@ import taskflow.entity.enums.ProjectRole;
         @UniqueConstraint(columnNames = {"project_id", "user_id"})
         }
 )
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

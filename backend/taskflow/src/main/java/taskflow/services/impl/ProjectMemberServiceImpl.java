@@ -1,5 +1,6 @@
 package taskflow.services.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,6 +34,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         return  userRepository.findByEmail(authentication.getName()).orElseThrow(()-> new RuntimeException("User not found"));
     }
 
+    @Transactional
     @Override
     public ProjectMemberResponse addMember(Long projectId, AddMemberRequest request){
         User currentUser=getCurrentUser();
@@ -68,6 +70,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         return projectMemberMapper.toResponse(savedMember);
     }
 
+    @Transactional
     @Override
     public List<ProjectMemberResponse> getMembers(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow(()->new RuntimeException("Project not found"));
@@ -75,6 +78,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         return members.stream().map(projectMemberMapper::toResponse).toList();
     }
 
+    @Transactional
     @Override
     public void removeMember(Long projectId, Long memberId){
         User currentUser=getCurrentUser();

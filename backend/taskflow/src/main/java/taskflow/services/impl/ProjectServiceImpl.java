@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import taskflow.entity.Project;
+import taskflow.entity.ProjectMember;
 import taskflow.entity.User;
 import taskflow.entity.dto.project.CreateProjectRequest;
 import taskflow.entity.dto.project.ProjectResponse;
+import taskflow.entity.enums.ProjectRole;
 import taskflow.entity.enums.ProjectStatus;
 import taskflow.exception.UserNotFoundException;
 import taskflow.mapper.ProjectMapper;
+import taskflow.repository.ProjectMemberRepository;
 import taskflow.repository.ProjectRepository;
 import taskflow.repository.UserRepository;
 import taskflow.services.interfaces.ProjectService;
@@ -29,6 +32,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final ProjectMapper projectMapper;
+    private final ProjectMemberRepository memberRepository;
 
     public User getCurrentUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -40,6 +44,8 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectResponse create(CreateProjectRequest request){
         User owner = getCurrentUser();
 
+        //Create Project
+
         Project project = Project.builder()
                 .name(request.getName())
                 .description(request.getDescription())
@@ -50,6 +56,15 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project saved = projectRepository.save(project);
 
+        //Create the Owner member
+        ProjectMember ownerMember = ProjectMember.builder()
+                .project(project)
+                .user(owner)
+                .role(ProjectRole.OWNER)
+                .build();
+
+        memberRepository.save(ownerMember);
+
         return projectMapper.toResponse(saved);
     }
 
@@ -59,7 +74,7 @@ public class ProjectServiceImpl implements ProjectService {
         User currentUser = getCurrentUser();
         Project project = projectRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found: " + id));
 
-        if (!currentUser.getId().equals(project.getOwner().getId()) ){
+        if (!memberRepository.existsByProjectAndUser(project, currentUser)){
             throw new AccessDeniedException("Access denied");
         }
         return projectMapper.toResponse(project);
@@ -68,7 +83,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectResponse> getMyProjects(){
         User currentUser = getCurrentUser();
-        List<Project> projects = projectRepository.findByOwner(currentUser);
+        List<Project> projects = projectRepository.findDistinctByMembers_User(currentUser);
         return projects.stream().map(projectMapper::toResponse).toList();
     }
 

@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findByOwner(User owner);
+    List<Project> findDistinctByMembers_User(User member);
 }
