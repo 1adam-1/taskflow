@@ -3,8 +3,7 @@ package taskflow.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import taskflow.entity.audit.BaseEntity;
 import taskflow.entity.enums.Priority;
 import taskflow.entity.enums.TaskStatus;
@@ -13,8 +12,11 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name="tasks")
-@Data
 @Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Task extends BaseEntity {
     @NotBlank
     @Size(max = 150)

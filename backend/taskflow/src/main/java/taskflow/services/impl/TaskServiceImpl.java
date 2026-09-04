@@ -1,5 +1,6 @@
 package taskflow.services.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import taskflow.entity.Project;
@@ -51,6 +52,7 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toResponse(saved);
     }
 
+    @Transactional
     @Override
     public List<TaskResponse> getTasksByProject(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow(()-> new RuntimeException("Project not found"));
@@ -59,6 +61,7 @@ public class TaskServiceImpl implements TaskService {
         return tasks.stream().map(taskMapper::toResponse).toList();
     }
 
+    @Transactional
     @Override
     public TaskResponse getTaskById(Long taskId){
         Task task = taskRepository.findById(taskId).orElseThrow(()-> new RuntimeException("Task not found"));
