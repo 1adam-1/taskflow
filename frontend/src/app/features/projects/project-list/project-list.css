@@ -1,0 +1,162 @@
+:host {
+  display: block;
+}
+
+.projects-page {
+  display: grid;
+  gap: 24px;
+}
+
+.page-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.page-header h1 {
+  color: #17212b;
+  font-size: clamp(1.8rem, 2vw, 2.4rem);
+  margin: 0;
+}
+
+.create-link,
+.update-link {
+  background: #17806e;
+  border-radius: 8px;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  padding: 10px 16px;
+  text-decoration: none;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.create-link:hover,
+.create-link:focus-visible,
+.update-link:hover,
+.update-link:focus-visible {
+  background: #125d52;
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.status-message {
+  margin: 0;
+  color: #405057;
+}
+
+.error-message {
+  color: #b42318;
+}
+
+.success-message {
+  color: #1b7f5a;
+}
+
+.empty-state {
+  background: #f3f6f5;
+  border: 1px dashed #c7d7d2;
+  border-radius: 10px;
+  color: #405057;
+  padding: 20px;
+}
+
+.project-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.project-card {
+  background: #fff;
+  border: 1px solid #dfe7e3;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(23, 33, 43, 0.04);
+  display: grid;
+  gap: 16px;
+  padding: 22px 20px;
+}
+
+.project-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.project-header h2 {
+  color: #17212b;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.status-badge {
+  background: #eaf7f3;
+  border: 1px solid #bfe2d4;
+  border-radius: 999px;
+  color: #125d52;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 6px 10px;
+  text-transform: uppercase;
+}
+
+.project-description {
+  color: #405057;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.project-dates {
+  color: #6c7d84;
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+.project-actions {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.delete-button {
+  background: #fff;
+  border: 1px solid #d7dfe2;
+  border-radius: 8px;
+  color: #762e28;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  padding: 10px 14px;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.delete-button:hover,
+.delete-button:focus-visible {
+  background: #fff2f1;
+  border-color: #efc4bf;
+  outline: none;
+}
+
+@media (max-width: 700px) {
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .project-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .create-link,
+  .update-link,
+  .delete-button {
+    width: 100%;
+  }
+}

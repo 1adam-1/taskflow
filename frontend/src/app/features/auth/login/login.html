@@ -1,0 +1,62 @@
+<div class="login-container">
+
+  <h1>Login</h1>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+    <div>
+      <label for="email">Email</label>
+
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+      >
+
+      @if (loginForm.controls.email.touched &&
+            loginForm.controls.email.invalid) {
+
+        @if (loginForm.controls.email.errors?.['required']) {
+          <small>Email is required.</small>
+        }
+
+        @if (loginForm.controls.email.errors?.['email']) {
+          <small>Enter a valid email.</small>
+        }
+      }
+    </div>
+
+
+    <div>
+      <label for="password">Password</label>
+
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+      >
+
+      @if (loginForm.controls.password.touched &&
+            loginForm.controls.password.errors?.['required']) {
+
+        <small>Password is required.</small>
+      }
+    </div>
+
+
+    @if (errorMessage()) {
+      <p class="login-error" role="alert">{{ errorMessage() }}</p>
+    }
+
+
+    <button
+      type="submit"
+      [disabled]="loginForm.invalid">
+
+      Login
+
+    </button>
+
+  </form>
+
+</div>  

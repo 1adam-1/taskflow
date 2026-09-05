@@ -1,0 +1,27 @@
+<h1>Create Project</h1>
+@if(errorMsg()){
+    <p class="error">{{ errorMsg() }}</p>
+}
+@if(successMsg()){
+    <p class="success">{{ successMsg() }}</p>
+}
+
+@if(CreateProjectForm.invalid && CreateProjectForm.touched){
+    <p class="error">Please fill out all required fields.</p>
+}
+
+<form [formGroup]="CreateProjectForm" (ngSubmit)="onSubmit()">
+    <label for="name">Name:</label>
+    <input type="text" id="name" formControlName="name">
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" formControlName="description">
+
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" formControlName="startDate">
+
+    <label for="endDate">End Date:</label>
+    <input type="date" id="endDate" formControlName="endDate">
+
+    <button type="submit">Create Project</button>
+</form>

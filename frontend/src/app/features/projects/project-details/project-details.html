@@ -1,0 +1,95 @@
+
+@if (loading()) {
+  <p class="status-message">Loading...</p>
+}
+
+@if (errorMsg()) {
+  <p class="status-message error-message">{{ errorMsg() }}</p>
+}
+
+@if (successMsg()) {
+  <p class="status-message success-message">{{ successMsg() }}</p>
+}
+
+@if (project) {
+<div>
+
+    <header>
+
+      <div>
+        <h1>{{ project.name }}</h1>
+
+        <p>
+          {{ project.description }}
+        </p>
+      </div>
+
+      <a
+        routerLink="/projects/{{ project.id }}/update">
+
+        Edit Project
+
+      </a>
+
+    </header>
+
+
+    <section>
+
+      <p>
+        <strong>Status:</strong>
+        {{ project.status }}
+      </p>
+
+      <p>
+        <strong>Start:</strong>
+        {{ project.startDate }}
+      </p>
+
+      <p>
+        <strong>End:</strong>
+        {{ project.endDate || 'No end date' }}
+      </p>
+
+      <p>
+        <strong>Owner:</strong>
+        {{ project.ownerName }}
+      </p>
+
+    </section>
+
+    <h1>Project Members</h1>
+
+    @if (membersLoading()) {
+      <p class="status-message">Loading members...</p>
+    }
+    @else if(members.length > 0) {
+    <section>
+      
+      <h2>Members</h2>
+
+      <ul>
+        @for ( member of members; track member.id) {
+          <li>
+            <span>{{ member.firstName }} : ({{ member.role }})</span>
+            <div class="button-group">
+             <button (click)="updateMember(member.id)">Update</button>
+             <button (click)="removeMember(member.id)">Remove</button>
+            </div>
+          </li>
+        }
+      </ul>
+
+    </section>
+    }
+    @else if (membersLoaded()) {
+      <p>No members found for this project.</p>
+    }
+    <a routerLink="/projects/{{ project.id }}/members/add">Add Member</a>
+
+    @if (projectId !== null && projectId !== undefined) {
+      <app-tasks-list [projectId]="projectId"></app-tasks-list>
+    }
+  </div>
+
+}

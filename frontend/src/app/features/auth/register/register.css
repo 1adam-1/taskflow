@@ -1,0 +1,39 @@
+.register-container {
+  max-width: 400px;
+  margin: 100px auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px;
+}
+
+small {
+  display: block;
+  color: #dc3545;
+  font-size: 0.875em;
+}
+
+.register-error {
+  margin: 0;
+  color: #dc3545;
+}
+
+.success {
+  color: #28a745;
+  font-size: 1em;
+  margin-top: 10px;
+}

@@ -1,0 +1,79 @@
+<section>
+
+  <header>
+    <h1>Dashboard</h1>
+    <p>Welcome back to TaskFlow.</p>
+  </header>
+
+  @if (msg()) {
+    <p>{{ msg() }}</p>
+  }
+
+  @if (isLoading()) {
+    <p>Loading...</p>
+  }
+
+  @if(isProjectsLoaded() && isTasksLoaded()) {
+    <div class="stats">
+
+      <article>
+        <h3>Projects</h3>
+        <strong>{{ projects.length }}</strong>
+      </article>
+
+      <article>
+        <h3>Total Tasks</h3>
+        <strong>{{ tasks.length }}</strong>
+      </article>
+
+
+      <article>
+        <h3>Completed</h3>
+        <strong>{{ completedCount }}</strong>
+      </article>
+
+    </div>
+
+    <section>
+
+      <header>
+        <h2>Recent Projects</h2>
+
+        <a routerLink="/projects">
+          View all
+        </a>
+      </header>
+
+      @if (recentProjects.length === 0) {
+        <p>No projects yet.</p>
+      }
+
+      @for (project of recentProjects; track project.id) {
+
+        <article>
+
+          <h3>{{ project.name }}</h3>
+
+          <p>{{ project.description }}</p>
+
+          <span>
+            {{ project.status }}
+          </span>
+
+          <a
+            [routerLink]="[
+              '/projects',
+              project.id
+            ]">
+            View project
+          </a>
+
+        </article>
+
+      }
+
+    </section>
+
+    }
+
+</section>

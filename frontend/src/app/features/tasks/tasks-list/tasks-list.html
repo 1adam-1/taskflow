@@ -1,0 +1,88 @@
+<section>
+
+  <header>
+    <h2>Tasks</h2>
+
+    <a
+      routerLink="/projects/{{ projectId }}/tasks/create">
+
+      New task
+
+    </a>
+  </header>
+
+
+  @if (loading()) {
+    <p>Loading tasks...</p>
+  }
+
+  @if (error) {
+    <p>{{ error }}</p>
+  }
+
+
+  @if (!loading() && tasks.length === 0) {
+    <p>No tasks yet.</p>
+  }
+
+
+  @for (task of tasks; track task.id) {
+
+    <article>
+
+      <h3>{{ task.title }}</h3>
+
+      <p>{{ task.description }}</p>
+
+      <span>
+        {{ task.status }}
+      </span>
+
+      <span>
+        {{ task.priority }}
+      </span>
+
+      @if (task.dueDate) {
+        <span>
+          Due: {{ task.dueDate }}
+        </span>
+      }
+
+      @if (task.assigneeName) {
+        <span>
+          Assigned to: {{ task.assigneeName }}
+        </span>
+      } @else {
+        <span>
+          Unassigned
+        </span>
+      }
+
+
+      <a
+        [routerLink]="[
+          '/projects',
+          projectId,
+          'tasks',
+          task.id,
+          'edit'
+        ]">
+
+        Edit
+
+      </a>
+
+
+      <button
+        type="button"
+        (click)="deleteTask(task.id)">
+
+        Delete
+
+      </button>
+
+    </article>
+
+  }
+
+</section>

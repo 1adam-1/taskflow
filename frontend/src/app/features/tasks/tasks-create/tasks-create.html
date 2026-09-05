@@ -1,0 +1,142 @@
+<section>
+
+  <header>
+    <h2>
+      {{ isEditMode() ? 'Edit task' : 'Create task' }}
+    </h2>
+  </header>
+
+  @if (msg()) {
+    <p>{{ msg() }}</p>
+  }
+
+  @if (isLoading()) {
+    <p>Loading...</p>
+  }
+
+  <form
+    [formGroup]="taskForm"
+    (ngSubmit)="onSubmit()">
+
+    <!-- Title -->
+    <div>
+      <label for="title">Title</label>
+
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+      />
+
+      @if (
+        taskForm.controls.title.touched &&
+        taskForm.controls.title.invalid
+      ) {
+        <small>
+          Title is required.
+        </small>
+      }
+    </div>
+
+    <!-- Description -->
+    <div>
+      <label for="description">Description</label>
+
+      <textarea
+        id="description"
+        rows="5"
+        formControlName="description">
+      </textarea>
+
+      @if (
+        taskForm.controls.description.touched &&
+        taskForm.controls.description.invalid
+      ) {
+        <small>
+          Description is required.
+        </small>
+      }
+    </div>
+
+    <!-- Priority -->
+    <div>
+      <label for="priority">Priority</label>
+
+      <select
+        id="priority"
+        formControlName="priority">
+
+        @for (priority of priorities; track priority) {
+          <option [value]="priority">
+            {{ priority }}
+          </option>
+        }
+
+      </select>
+    </div>
+
+    <!-- Status : uniquement modification -->
+    @if (isEditMode()) {
+      <div>
+        <label for="status">Status</label>
+
+        <select
+          id="status"
+          formControlName="status">
+
+          @for (status of statuses; track status) {
+            <option [value]="status">
+              {{ status }}
+            </option>
+          }
+
+        </select>
+      </div>
+    }
+
+    <!-- Due date -->
+    <div>
+      <label for="dueDate">Due date</label>
+
+      <input
+        id="dueDate"
+        type="date"
+        formControlName="dueDate"
+      />
+    </div>
+
+    <!-- Assignee -->
+    <div>
+      <label for="assigneeId">Assignee</label>
+
+      <select
+        id="assigneeId"
+        formControlName="assigneeId">
+
+        <option [ngValue]="null">
+          Unassigned
+        </option>
+
+        @for (member of members; track member.id) {
+          <option [ngValue]="member.id">
+            {{ member.firstName }} {{ member.lastName }}
+          </option>
+        }
+
+      </select>
+    </div>
+
+    <!-- Actions -->
+    <div>
+      <button
+        type="submit"
+        [disabled]="isLoading() || taskForm.invalid">
+
+        {{ isEditMode() ? 'Update task' : 'Create task' }}
+
+      </button>
+    </div>
+
+  </form>
+
+</section>

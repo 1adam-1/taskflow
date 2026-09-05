@@ -1,0 +1,8 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: postgres-container
+    environment:
+      POSTGRES_DB: taskflow
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root

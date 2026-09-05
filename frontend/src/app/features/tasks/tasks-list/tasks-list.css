@@ -1,0 +1,145 @@
+:host {
+	display: block;
+}
+
+section {
+	display: grid;
+	gap: 20px;
+}
+
+header {
+	align-items: center;
+	border-bottom: 1px solid #dfe7e3;
+	display: flex;
+	gap: 16px;
+	justify-content: space-between;
+	padding-bottom: 14px;
+}
+
+h2 {
+	color: #17212b;
+	font-size: clamp(1.8rem, 3vw, 2.35rem);
+	margin: 0;
+}
+
+header a,
+article a {
+	color: #17644f;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+header a {
+	background: #17806e;
+	border-radius: 8px;
+	color: #fff;
+	padding: 10px 14px;
+	transition: background-color 160ms ease, transform 160ms ease;
+}
+
+header a:hover,
+header a:focus-visible {
+	background: #125d52;
+	outline: none;
+	transform: translateY(-1px);
+}
+
+section > p {
+	background: #eaf7f3;
+	border: 1px solid #bfe5d2;
+	border-radius: 8px;
+	color: #17644f;
+	margin: 0;
+	padding: 12px 14px;
+}
+
+article {
+	background: #fff;
+	border: 1px solid #dfe7e3;
+	border-left: 4px solid #17806e;
+	border-radius: 10px;
+	box-shadow: 0 5px 16px rgba(23, 33, 43, 0.04);
+	display: grid;
+	gap: 12px;
+	padding: 20px;
+}
+
+article h3 {
+	color: #17212b;
+	font-size: 1.2rem;
+	margin: 0;
+}
+
+article p {
+	color: #59676b;
+	line-height: 1.55;
+	margin: 0;
+}
+
+article span {
+	background: #f1f4f2;
+	border-radius: 999px;
+	color: #405057;
+	display: inline-block;
+	font-size: 0.85rem;
+	justify-self: start;
+	padding: 5px 10px;
+}
+
+article a {
+	justify-self: start;
+	margin-top: 4px;
+}
+
+article a:hover,
+article a:focus-visible {
+	color: #125d52;
+	text-decoration: underline;
+}
+
+article button {
+	background: #fff;
+	border: 1px solid #c97b76;
+	border-radius: 7px;
+	color: #a33b36;
+	cursor: pointer;
+	font: inherit;
+	font-weight: 700;
+	justify-self: start;
+	padding: 8px 12px;
+	transition: background-color 160ms ease, color 160ms ease;
+}
+
+article button:hover,
+article button:focus-visible {
+	background: #a33b36;
+	color: #fff;
+	outline: none;
+}
+
+@media (min-width: 700px) {
+	article {
+		grid-template-columns: 1fr auto;
+	}
+
+	article h3,
+	article p {
+		grid-column: 1 / -1;
+	}
+
+	article a,
+	article button {
+		grid-row: 4;
+	}
+
+	article button {
+		grid-column: 2;
+	}
+}
+
+@media (max-width: 520px) {
+	header {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}

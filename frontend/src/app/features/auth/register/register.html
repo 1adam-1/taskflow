@@ -1,0 +1,89 @@
+
+<div class="register-container"> 
+    <h1>Register</h1>
+
+    <div>
+        @if (successMessage()) {
+            <p class="success">{{ successMessage() }}</p>
+        }
+        @if (errorMessage()) {
+            <p class="register-error">{{ errorMessage() }}</p>
+        }
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <div>
+            <label for="firstName">First Name</label>
+
+            <input
+                id="firstName"
+                type="text"
+                formControlName="firstName"
+            >
+            @if (registerForm.controls.firstName.touched && registerForm.controls.firstName.invalid) {
+                <small>First name is required</small>
+            }
+        </div>
+
+        <div>
+            <label for="lastName">Last Name</label>
+
+            <input
+                id="lastName"
+                type="text"
+                formControlName="lastName"
+            >
+            @if (registerForm.controls.lastName.touched && registerForm.controls.lastName.invalid) {
+                <small>Last name is required</small>
+            }
+
+        </div>
+
+        <div>
+            <label for="email">Email</label>
+
+            <input
+                id="email"
+                type="email"
+                formControlName="email"
+            >
+
+            @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
+
+                @if (registerForm.controls.email.errors?.['required']) {
+                    <small>Email is required.</small>
+                }
+
+                @if (registerForm.controls.email.errors?.['email']) {
+                    <small>Enter a valid email.</small>
+                }
+            }
+        </div>
+
+        <div>
+            <label for="password">Password</label>
+
+            <input
+                id="password"
+                type="password"
+                formControlName="password"
+            >
+
+            @if (registerForm.controls.password.touched && registerForm.controls.password.errors?.['required']) {
+
+                <small class="error">Password is required.</small>
+            }
+
+            @if (registerForm.controls.password.touched && registerForm.controls.password.errors?.['minlength']) {
+
+                <small class="error">Password must be at least 6 characters long.</small>
+            }
+        </div>
+                <button 
+                type="submit"
+                [disabled]="registerForm.invalid"
+                >Register</button>
+    </form>
+    
+</div>
