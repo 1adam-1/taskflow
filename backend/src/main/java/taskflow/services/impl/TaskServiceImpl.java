@@ -13,6 +13,8 @@ import taskflow.entity.dto.task.CreateTaskRequest;
 import taskflow.entity.dto.task.TaskResponse;
 import taskflow.exception.UserNotFoundException;
 import taskflow.mapper.TaskMapper;
+import taskflow.messaging.publisher.TaskEventPublisher;
+import taskflow.messaging.event.TaskCreatedEvent;
 import taskflow.repository.ProjectMemberRepository;
 import taskflow.repository.ProjectRepository;
 import taskflow.repository.TaskRepository;
@@ -29,6 +31,7 @@ public class TaskServiceImpl implements TaskService {
     private final UserRepository userRepository;
     private final TaskMapper taskMapper;
     private final ProjectMemberRepository memberRepository;
+    private final TaskEventPublisher taskEventPublisher;
 
     public User getCurrentUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -57,6 +60,15 @@ public class TaskServiceImpl implements TaskService {
                 .build();
 
         Task saved = taskRepository.save(task);
+
+        taskEventPublisher.PublishTaskCreated(
+                new TaskCreatedEvent(
+                        saved.getId(),
+                        saved.getProject().getId(),
+                        saved.getTitle(),
+                        saved.getAssignee() != null ?saved.getAssignee().getId():null
+                )
+        );
 
         return taskMapper.toResponse(saved);
     }

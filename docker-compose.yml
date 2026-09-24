@@ -22,6 +22,11 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/taskflow_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: root
+
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: taskflow
+      SPRING_RABBITMQ_PASSWORD: taskflow
     
   frontend:
     build: ./frontend
@@ -30,6 +35,16 @@ services:
       - backend
     ports:
       - "4200:80"
+  
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: taskflow-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: taskflow
+      RABBITMQ_DEFAULT_PASS: taskflow
 
 volumes:
   postgres-data:
