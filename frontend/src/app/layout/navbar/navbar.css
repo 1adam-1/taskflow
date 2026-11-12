@@ -67,3 +67,90 @@
 		display: none;
 	}
 }
+
+.notification-container {
+  position: relative;
+}
+
+.notification-button {
+  position: relative;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 8px;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  background: red;
+  color: white;
+
+  border-radius: 50%;
+  min-width: 18px;
+  height: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+
+  width: 320px;
+  background: #ffffff;
+  color: #17212b;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+
+  z-index: 1000;
+}
+
+.notification-header {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  color: #17212b;
+}
+
+.notification-item {
+  padding: 12px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  color: #17212b;
+}
+
+.notification-item:hover {
+  background: #dcecff;
+}
+
+.notification-item.unread {
+  background: #c7e0ff;
+  color: #102a43;
+  font-weight: 600;
+}
+
+.notification-message {
+  margin-bottom: 5px;
+}
+
+.notification-item small {
+  color: #52606d;
+}
+
+.empty-notifications {
+  padding: 20px;
+  text-align: center;
+  color: #52606d;
+}

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginRequest, AuthenticationResponse, RegisterRequest } from '../models/auth.models';
+import { LoginRequest, AuthenticationResponse, RegisterRequest, UserResponse } from '../models/auth.models';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from '../../../environments/environment';
 
@@ -34,6 +34,10 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return !!this.getToken();
+  }
+
+  getCurrentUser(): Observable<UserResponse> {
+    return this.http.get<UserResponse>(`${environment.apiUrl}/auth/user`);
   }
 
 }

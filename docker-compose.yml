@@ -26,6 +26,22 @@ services:
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_PORT: 5672
       SPRING_RABBITMQ_USERNAME: taskflow
+
+  notification-service:
+    build: ./notification-service
+    container_name: notification-service-container
+    depends_on:
+      - notification-db
+      - rabbitmq
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://notification-db:5432/notification-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: taskflow
       SPRING_RABBITMQ_PASSWORD: taskflow
     
   frontend:
@@ -46,5 +62,17 @@ services:
       RABBITMQ_DEFAULT_USER: taskflow
       RABBITMQ_DEFAULT_PASS: taskflow
 
+  notification-db:
+    image: postgres:18
+    container_name: taskflow-notification-db
+    environment:
+      POSTGRES_DB: notification-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5433:5432"
+    volumes:
+      - notification-postgres-data:/var/lib/postgresql
 volumes:
   postgres-data:
+  notification-postgres-data:

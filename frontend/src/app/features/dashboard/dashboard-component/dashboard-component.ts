@@ -38,7 +38,9 @@ export class DashboardComponent {
       next: (projects) => {
         this.projects = projects;
         if (projects.length === 0) {
-          this.msg.set('No projects found');
+          this.isLoading.set(false);
+          this.isProjectsLoaded.set(true);
+          this.isTasksLoaded.set(true);
           return;
         }
         for (const project of projects) {
@@ -65,9 +67,6 @@ export class DashboardComponent {
     })
   }
 
-  get inpprogressCount(): number { 
-    return this.tasks.filter(task => task.status === TaskStatus.IN_PROGRESS).length;
-  }
 
    get inProgressCount(): number {
     return this.tasks.filter(

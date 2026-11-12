@@ -13,3 +13,9 @@ export interface RegisterRequest {
 export interface AuthenticationResponse {
   accessToken: string;
 }
+
+export interface UserResponse{
+  id: number;
+  firstName: string;
+  lastName: string;
+}

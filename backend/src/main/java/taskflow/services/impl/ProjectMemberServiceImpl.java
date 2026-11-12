@@ -110,11 +110,20 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     public void updateRole(Long projectId, Long memberId, ProjectRole role){
         Project project = projectRepository.findById(projectId).orElseThrow(()->new RuntimeException("Project not found"));
         ProjectMember member = memberRepository.findById(memberId).orElseThrow(()-> new RuntimeException("User not found"));
+        User currentUser=getCurrentUser();
+        ProjectMember currentMember = memberRepository.findByProjectAndUser(project, currentUser).orElseThrow(()->new RuntimeException("Member not found"));
+
+        if (currentMember.getRole() == ProjectRole.MEMBER) {
+            throw new RuntimeException(
+                    "You do not have permission"
+            );
+        }
         if (!member.getProject().getId().equals(project.getId())) {
             throw new RuntimeException(
                     "Member does not belong to this project"
             );
         }
+        
         member.setRole(role);
         memberRepository.save(member);
     }

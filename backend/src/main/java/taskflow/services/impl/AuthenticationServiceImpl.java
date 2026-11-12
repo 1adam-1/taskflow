@@ -3,12 +3,15 @@ package taskflow.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import taskflow.entity.User;
 import taskflow.entity.dto.auth.AuthenticationResponse;
 import taskflow.entity.dto.auth.LoginRequest;
 import taskflow.entity.dto.auth.RegisterRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import taskflow.entity.dto.auth.UserResponse;
 import taskflow.entity.enums.Role;
 import taskflow.exception.EmailAlreadyExistsException;
 import taskflow.exception.UserNotFoundException;
@@ -53,5 +56,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         );
         String jwt = jwtService.generateToken(user);
         return AuthenticationResponse.builder().accessToken(jwt).build();
+    }
+
+    @Override
+    public UserResponse getCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(()-> new RuntimeException("User not found"));
+        UserResponse currentUser = UserResponse.builder()
+                .id(user.getId())
+                .firstname(user.getFirstName())
+                .lastname(user.getLastName())
+                .build();
+
+        return currentUser;
     }
 }
