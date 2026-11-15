@@ -46,7 +46,6 @@ export class Navbar {
       this.notifService.getNotifications(this.currentUser.id).subscribe({
         next: (notifications) => {
           this.notifications.set(notifications);
-          this.showNotifications.set(true);
         },
         error: (error) => {
           console.error('Error fetching notifications:', error);

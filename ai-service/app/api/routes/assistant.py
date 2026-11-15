@@ -1,24 +1,25 @@
 import httpx
 from fastapi import APIRouter, Header, HTTPException
 from app.clients.core_api import CoreApiClient
-
+from app.schemas.assistant import ChatRequest, ChatResponse
+from app.service.assistant_service import chat as assistant_chat
 router = APIRouter(
     prefix="/api/assistant",
     tags=["assistant"]
 )
 
-@router.get("/test/projects")
-async def test_projects(authorization: str = Header(...)):
+@router.post("/chat")
+async def chat(request: ChatRequest, authorization: str = Header(...)):
     if not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Invalid authorization header")
 
-    core_api = CoreApiClient(authorization)
     try:
-        return await core_api.get_projects()
-    except httpx.HTTPStatusError as exc:
+        response =await assistant_chat(request.message, authorization)
+        return ChatResponse(answer=response)
+
+    except httpx.HTTPStatusError as e:
         raise HTTPException(
-            status_code=exc.response.status_code,
-            detail="Core API request failed",
-        ) from exc
-    finally:
-        await core_api.close()
+            status_code=e.response.status_code,
+            detail="Core API request failed"
+        )
+        

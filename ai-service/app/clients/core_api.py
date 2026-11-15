@@ -4,7 +4,7 @@ import httpx
 from dotenv import load_dotenv
 
 load_dotenv()
-API_CORE = os.getenv("SPRING_API_URL").rstrip("/")
+API_CORE = os.getenv("SPRING_API_URL", "http://localhost:8080/api").rstrip("/")
 
 
 class CoreApiClient:

@@ -1,0 +1,33 @@
+<section class="assistant-page">
+  <header>
+    <h1>Assistant</h1>
+    <p>Ask questions about your tasks and projects.</p>
+  </header>
+
+  <form (ngSubmit)="sendMessage()">
+    <label for="assistant-message">Your question</label>
+    <textarea
+      id="assistant-message"
+      name="message"
+      [(ngModel)]="message"
+      maxlength="1000"
+      required
+      placeholder="For example: Which tasks require my attention?"
+    ></textarea>
+
+    <button type="submit" [disabled]="isLoading() || !message.trim()">
+      {{ isLoading() ? 'Thinking...' : 'Send' }}
+    </button>
+  </form>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  @if (answer()) {
+    <article class="answer">
+      <h2>Answer</h2>
+      <p>{{ answer() }}</p>
+    </article>
+  }
+</section>
