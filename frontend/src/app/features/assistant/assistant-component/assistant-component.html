@@ -27,7 +27,7 @@
   @if (answer()) {
     <article class="answer">
       <h2>Answer</h2>
-      <p>{{ answer() }}</p>
+      <markdown [data]="answer()"></markdown>
     </article>
   }
 </section>

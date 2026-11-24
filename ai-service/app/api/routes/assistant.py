@@ -1,8 +1,7 @@
 import httpx
 from fastapi import APIRouter, Header, HTTPException
-from app.clients.core_api import CoreApiClient
 from app.schemas.assistant import ChatRequest, ChatResponse
-from app.service.assistant_service import chat as assistant_chat
+from app.agent.create_agent import agent as assistant_chat
 router = APIRouter(
     prefix="/api/assistant",
     tags=["assistant"]

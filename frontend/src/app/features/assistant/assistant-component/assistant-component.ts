@@ -2,10 +2,11 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AssistantService } from '../../../core/services/assistant/assistant';
+import { MarkdownModule } from 'ngx-markdown';
 
 @Component({
   selector: 'app-assistant-component',
-  imports: [FormsModule],
+  imports: [FormsModule, MarkdownModule],
   templateUrl: './assistant-component.html',
   styleUrl: './assistant-component.css',
 })
